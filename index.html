@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Censo 2018 – El Progreso | Front-End (Bootstrap + JS)</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-icons-1.13.1/bootstrap-icons.min.css">
+
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+
+        .navbar {
+            background: #0d6efd;
+        }
+
+        .navbar .navbar-brand,
+        .navbar-nav .nav-link {
+            color: #fff !important;
+        }
+
+        .card {
+            margin-bottom: 1rem;
+        }
+
+        pre {
+            background: #212529;
+            color: #f8f9fa;
+            padding: 1rem;
+            border-radius: .5rem;
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-semibold" href="#">
+                <i class="bi bi-table me-2"></i>
+                Censo 2018
+            </a>
+        </div>
+    </nav>
+
+    <main class="container pb-5">
+
+        <div class="row g-3">
+
+            <!-- <div class="col-12 col-lg-4">
+        
+        <div class="card p-3">
+          <h5 class="mb-3"><i class="bi bi-sliders me-2"></i>Controles</h5>
+          <div class="mb-3">
+            <label class="form-label">Ubicación</label>
+            <select id="selUbicacion" class="form-select">
+              <optgroup label="Departamento">
+                <option value="999">El Progreso (resumen departamental)</option>
+              </optgroup>
+              <optgroup label="Municipios de El Progreso">
+                <option value="201">201 – Guastatoya</option>
+                <option value="202">202 – Morazán</option>
+                <option value="203">203 – San Agustín Acasaguastlán</option>
+                <option value="204">204 – San Cristóbal Acasaguastlán</option>
+                <option value="205">205 – El Jícaro</option>
+                <option value="206">206 – Sansare</option>
+                <option value="207">207 – Sanarate</option>
+                <option value="208">208 – San Antonio La Paz</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="d-grid gap-2">
+            <button id="btnCargar" class="btn btn-primary"><i class="bi bi-cloud-arrow-down me-2"></i>Cargar datos</button>
+            <button id="btnImprimir" class="btn btn-outline-secondary"><i class="bi bi-printer me-2"></i>Imprimir / PDF</button>
+            <button id="btnExportar" class="btn btn-outline-success"><i class="bi bi-filetype-json me-2"></i>Exportar JSON</button>
+          </div>
+        </div>
+      </div> -->
+
+            <div class="col-12 col-lg-12">
+                <div class="card" id="panelDatos">
+                    <div class="p-3">
+                        <h4 id="tituloUbicacion">El Progreso | Resumen departamental</h4>
+                        <div class="card">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" id="datos-depto-tab" data-bs-toggle="tab"
+                                            href="#datos-depto" role="tab" aria-controls="datos-depto"
+                                            aria-selected="true">
+                                            Datos Departamento
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="personas-tab" data-bs-toggle="tab" href="#personas"
+                                            role="tab" aria-controls="personas" aria-selected="false">
+                                            Personas
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="viviendas-tab" data-bs-toggle="tab" href="#viviendas"
+                                            role="tab" aria-controls="viviendas" aria-selected="false">
+                                            Viviendas y Hogares
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="poblacionSexo-tab" data-bs-toggle="tab" href="#poblacionSexo"
+                                            role="tab" aria-controls="poblacionSexo" aria-selected="false">
+                                            Población por sexo
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="poblacionArea-tab" data-bs-toggle="tab" href="#poblacionArea"
+                                            role="tab" aria-controls="poblacionArea" aria-selected="false">
+                                            Población por área
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="poblacionGrandesGruposEdad-tab" data-bs-toggle="tab" href="#poblacionGrandesGruposEdad"
+                                            role="tab" aria-controls="poblacionGrandesGruposEdad" aria-selected="false">
+                                            Población por grandes grupos de edad
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="poblacionPueblos-tab" data-bs-toggle="tab" href="#poblacionPueblos"
+                                            role="tab" aria-controls="poblacionPueblos" aria-selected="false">
+                                            Población por pueblos
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="card-body tab-content" id="myTabContent">
+
+                                <div class="tab-pane fade show active" id="datos-depto" role="tabpanel"
+                                    aria-labelledby="datos-depto-tab">
+                                    <h5 class="card-title" id="nombreDepartamento"></h5>
+                                    <ul>
+                                        <li>Total municipios: <span id="totalMunicipios"></span></li>
+                                        <li>Cabecera: <span id="cabecera"></span></li>
+                                        <li>Total población: <span id="pob_total"></span></li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="personas" role="tabpanel" aria-labelledby="personas-tab">
+              
+                                    <ul>
+                                        <li>Índice de Masculinidad: <span id="indice_masculinidad"></span></li>
+                                        <li>Edad promedio: <span id="edad_promedio"></span></li>
+                                        <li>Índice de Dependencia: <span id="indice_dependencia"></span></li>
+                                        <li>* Años promedio de estudio: <span id="anios_prom_estudio"></span></li>
+                                        <li>* Alfabetismo: <span id="alfabetismo"></span></li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="viviendas" role="tabpanel" aria-labelledby="viviendas-tab">
+                                     <ul>
+                                        <li>Viviendas particulares: <span id="viviendas_part"></span></li>
+                                        <li>Total de hogares: <span id="total_hogares"></span></li>
+                                        <li>Promedio personas por hogar: <span id="prom_personas_hogar"></span></li>
+                                        <li>Porcentaje de jefas de hogar: <span id="total_jefas_hogar"></span></li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="poblacionSexo" role="tabpanel" aria-labelledby="poblacionSexo-tab">
+                                     <ul>
+                                        <li>Total hombre: <span id="total_sexo_hombre"></span></li>
+                                        <li>Total % hombre: <span id="porc_sexo_hombre"></span></li>
+                                        <li>Total mujeres: <span id="total_sexo_mujeres"></span></li>
+                                        <li>Total % mujeres: <span id="porc_sexo_mujeres"></span></li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="poblacionArea" role="tabpanel" aria-labelledby="poblacionArea-tab">
+                                     <ul>
+                                        <li>Total urbana: <span id="total_sector_urbano"></span></li>
+                                        <li>Total % urbana: <span id="porc_sector_urbano"></span></li>
+                                        <li>Total rural: <span id="total_sector_rural"></span></li>
+                                        <li>Total % rural: <span id="porc_sector_rural"></span></li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="poblacionGrandesGruposEdad" role="tabpanel" aria-labelledby="poblacionGrandesGruposEdad-tab">
+                                     <ul>
+                                        <li>Total 0-14 años: <span id="pob_edad_014"></span></li>
+                                        <li>Total % 0-14 años: <span id="porc_edad_014"></span></li>
+                                        <li>Total 15-64 años: <span id="pob_edad_1564"></span></li>
+                                        <li>Total % 15-64 años: <span id="porc_edad_1564"></span></li>
+                                        <li>Total 65 y más años: <span id="pob_edad_65"></span></li>
+                                        <li>Total % 65 y más años: <span id="porc_edad_65"></span></li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-pane fade" id="poblacionPueblos" role="tabpanel" aria-labelledby="poblacionPueblos-tab">
+                                     <ul>
+                                        <li>Total Maya: <span id="pob_pueblo_maya"></span></li>
+                                        <li>Total % Maya: <span id="porc_pueblo_maya"></span></li>
+                                        <li>Total Garífuna: <span id="pob_pueblo_garifuna"></span></li>
+                                        <li>Total % Garífuna: <span id="porc_pueblo_garifuna"></span></li>
+                                        <li>Total Xinka: <span id="pob_pueblo_xinca"></span></li>
+                                        <li>Total % Xinka: <span id="porc_pueblo_xinca"></span></li>
+                                        <li>Total Afrodescendiente/Creole/Afromestizo: <span id="pob_pueblo_afrodescendiente"></span></li>
+                                        <li>Total % Afrodescendiente/Creole/Afromestizo: <span id="porc_pueblo_afrodescendiente"></span></li>
+                                        <li>Total Ladino: <span id="pob_pueblo_ladino"></span></li>
+                                        <li>Total % Ladino: <span id="porc_pueblo_ladino"></span></li>
+                                        <li>Total Extranjero: <span id="pob_pueblo_extranjero"></span></li>
+                                        <li>Total % Extranjero: <span id="porc_pueblo_extranjero"></span></li>
+                                    </ul>
+                                </div>
+
+                                <!-- agrega más tab-panes aquí -->
+                            </div>
+                        </div>
+
+                        <div id="contenedorDatos" class="mt-3"></div>
+                        <div id="contenedorRaw" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4 small text-muted">
+            Hecho por Josue Manuel Martinez Pedroza | 1890-17-12512
+        </div>
+    </main>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/functions.js"></script>
+</body>
+
+</html>
